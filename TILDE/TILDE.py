@@ -32,6 +32,7 @@ class Node(object):
     score = None
     all_vars = list(ascii_uppercase)
     target_pred = ''
+    checklist = list()
 
 
     @staticmethod
@@ -57,6 +58,7 @@ class Node(object):
         self.depth = depth
         self.p = p
         self.var_types = var_types
+        #self.checklist = list()
         if parent == "root":
             Node.target_pred = Node.target+'('
             for functor in bk:
@@ -237,6 +239,9 @@ class Node(object):
         child_bk = []
         test_conditions_and_modes = conditions_and_var_types[0]
         test_conditions = [item[0] for item in test_conditions_and_modes]
+        #print(test_conditions)
+        #raise KeyboardInterrupt
+        test_conditions = [item for item in test_conditions if item not in Node.checklist]
         modes = [item[1] for item in test_conditions_and_modes]
         children_var_types = conditions_and_var_types[1]
         clauses = []
@@ -260,12 +265,17 @@ class Node(object):
         index = scores.index(min_score)
         self.best_condition = test_conditions[index]
         #print(self.best_condition)
-        mode_to_remove = modes[index]
+        #mode_to_remove = modes[index]
+        #print(self.best_condition)
+        Node.checklist.append(self.best_condition)
+        #print(Node.checklist)
+        #raise KeyboardInterrupt
 
         #remove tested mode from child bk
-        for mode in self.bk:
-            if mode != mode_to_remove:
-                child_bk.append(mode)
+        child_bk = self.bk
+        #for mode in self.bk:
+            #if mode != mode_to_remove:
+        #    child_bk.append(mode)
 
         #get left children variable types to pass to left node
         child_var_types = {}

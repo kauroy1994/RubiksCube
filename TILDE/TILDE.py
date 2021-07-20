@@ -9,12 +9,17 @@ from statistics import pvariance,mean
 def entropy(bool_list):
     """computes entropy of list of 1's and 0's
     """
-
     if (not bool_list) or (len(bool_list) == 1):
         return 0
     p1 = sum(bool_list)/len(bool_list)
     p0 = 1-p1
-    return (-1*p1*log2(p1)-1*p0*log2(p0))
+
+    if(p0==0):#change 02
+        return (-1*p1*log2(float(p1)))
+    if(p1==0):
+        return (-1*p0*log2(float(p0)))
+    else:
+        return (-1*p1*log2(float(p1))-1*p0*log2(float(p0)))
 
 class Node(object):
     """implements a tree node with
@@ -254,6 +259,7 @@ class Node(object):
         min_score = min(scores)
         index = scores.index(min_score)
         self.best_condition = test_conditions[index]
+        #print(self.best_condition)
         mode_to_remove = modes[index]
 
         #remove tested mode from child bk
@@ -319,7 +325,10 @@ class TILDE(object):
             if (top_node.depth + 1 == self.max_depth) or round(score,5) == 0.0:
                 left_node_clause = str(left_node)
                 if self.typ == "classification":
-                    self.clauses.append((left_node_clause,sum(list(left_node.examples.values()))/len(left_node.examples)))
+                    if(len(left_node.examples)==0): #change 02
+                        self.clauses.append((left_node_clause,sum(list(left_node.examples.values()))/1))
+                    else:
+                        self.clauses.append((left_node_clause,sum(list(left_node.examples.values()))/len(left_node.examples)))
                 elif self.typ == "regression":
                     self.clauses.append((left_node_clause,mean(list(left_node.examples.values()))))
                 right_node_clause = str(right_node)

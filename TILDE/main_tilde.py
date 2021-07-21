@@ -69,7 +69,7 @@ def classify():
     train_neg = ['move_right_one(ye,bl)','move_right_one(wh,gr)',
                 'move_right_one(ye,or)','move_right_one(ye,gr)','move_right_one(ye,re)']
     target = 'move_right_one'
-    bk = ['move_right_one(+piece1,+piece2)', 'edge_center2(+piece1,+piece2,-piece)','adjacent(+piece2,+piece)']
+    bk = ['move_right_one(+piece1,+piece2)', 'edge_center2(+piece1,+piece2,+piece)','adjacent(+piece2,+piece)']
 
     tree.learn(train_data,bk,target,pos=train_pos,neg=train_neg)
     print ("\nlearned ordered tree clauses are:\n")

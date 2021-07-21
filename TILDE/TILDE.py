@@ -238,11 +238,10 @@ class Node(object):
         conditions_and_var_types = self.find_test_conditions(self.bk)
         child_bk = []
         test_conditions_and_modes = conditions_and_var_types[0]
-        test_conditions = [item[0] for item in test_conditions_and_modes]
-        #print(test_conditions)
-        #raise KeyboardInterrupt
-        test_conditions = [item for item in test_conditions if item not in Node.checklist]
-        modes = [item[1] for item in test_conditions_and_modes]
+        test_conditions = [item[0] for item in test_conditions_and_modes if item[0] not in Node.checklist]
+        if not test_conditions:
+            return False
+        modes = [item[1] for item in test_conditions_and_modes if item[0] not in Node.checklist]
         children_var_types = conditions_and_var_types[1]
         clauses = []
         for test_condition in test_conditions:
@@ -328,31 +327,32 @@ class TILDE(object):
         while stack:
             top_node = stack.pop()
             info = top_node.expand()
-            score = info[0]
-            left_node = info[1]
-            right_node = info[2]
+            if info:
+                score = info[0]
+                left_node = info[1]
+                right_node = info[2]
 
-            #check if score 0 or max depth reached
-            if (top_node.depth + 1 == self.max_depth) or round(score,5) == 0.0:
-                left_node_clause = str(left_node)
-                if self.typ == "classification":
-                    if(len(left_node.examples)==0): #change 02
-                        self.clauses.append((left_node_clause,sum(list(left_node.examples.values()))/1))
-                    else:
-                        self.clauses.append((left_node_clause,sum(list(left_node.examples.values()))/len(left_node.examples)))
-                elif self.typ == "regression":
-                    self.clauses.append((left_node_clause,mean(list(left_node.examples.values()))))
-                right_node_clause = str(right_node)
-                if self.typ == "classification":
-                    self.clauses.append((right_node_clause,sum(list(right_node.examples.values()))/len(right_node.examples)))
-                elif self.typ == "regression":
-                    self.clauses.append((right_node_clause,mean(list(right_node.examples.values()))))
-            #if not push right and left child for expansion if there are examples there
-            else:
-                if right_node.examples:
-                    stack.append(right_node)
-                if left_node.examples:
-                    stack.append(left_node)
+                #check if score 0 or max depth reached
+                if (top_node.depth + 1 == self.max_depth) or round(score,5) == 0.0:
+                    left_node_clause = str(left_node)
+                    if self.typ == "classification":
+                        if(len(left_node.examples)==0): #change 02
+                            self.clauses.append((left_node_clause,sum(list(left_node.examples.values()))/1))
+                        else:
+                            self.clauses.append((left_node_clause,sum(list(left_node.examples.values()))/len(left_node.examples)))
+                    elif self.typ == "regression":
+                        self.clauses.append((left_node_clause,mean(list(left_node.examples.values()))))
+                    right_node_clause = str(right_node)
+                    if self.typ == "classification":
+                        self.clauses.append((right_node_clause,sum(list(right_node.examples.values()))/len(right_node.examples)))
+                    elif self.typ == "regression":
+                        self.clauses.append((right_node_clause,mean(list(right_node.examples.values()))))
+                #if not push right and left child for expansion if there are examples there
+                else:
+                    if right_node.examples:
+                        stack.append(right_node)
+                    if left_node.examples:
+                        stack.append(left_node)
 
     def infer(self,data,example):
         """infers value of example

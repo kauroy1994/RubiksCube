@@ -64,8 +64,7 @@ def classify():
                 'edge_inplace(ye,re)','edge_inplace(ye,gr)',
                 'right_inplace(wh,gr)','right_inplace(ye,re)','right_inplace(ye,gr)',
                 'move_left_one(ye,bl)','move_left_one(wh,re)','move_left_one(wh,gr)',
-                'move_left_two(ye,or)','move_left_two(wh,bl)',
-                'move_right_two(ye,bl)','move_right_two(ye,or)']
+                'move_left_two(ye,or)','move_left_two(wh,bl)']
     train_pos = ['move_right_one(wh,re)','move_right_one(wh,or)','move_right_one(wh,bl)']
     train_neg = ['move_right_one(ye,bl)','move_right_one(wh,gr)',
                 'move_right_one(ye,or)','move_right_one(ye,gr)','move_right_one(ye,re)']

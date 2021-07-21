@@ -46,15 +46,12 @@ def classify():
                 'edgepiece(ye,or)','edgepiece(ye,re)','edgepiece(ye,gr)','edgepiece(ye,bl)',
                 'edge_center1(ye,re,ye)','edge_center2(ye,re,re)',
                 'edge_center1(ye,gr,ye)','edge_center2(ye,gr,gr)',
-                'edge_center1(ye,bl,re)','edge_center2(ye,bl,or)',
-                'edge_center1(ye,or,wh)','edge_center2(ye,or,bl)',
+                'edge_center1(ye,bl,re)','edge_center2(ye,bl,gr)',
+                'edge_center1(ye,or,wh)','edge_center2(ye,or,re)',
                 'edge_center1(wh,re,or)','edge_center2(wh,re,gr)',
                 'edge_center1(wh,gr,re)','edge_center2(wh,gr,gr)',
                 'edge_center1(wh,or,wh)','edge_center2(wh,or,ye)',
                 'edge_center1(wh,bl,ye)','edge_center2(wh,bl,re)',
-                'left_inplace(wh,or)','left_inplace(ye,re)','left_inplace(ye,gr)',
-                'right_inplace(wh,gr)','right_inplace(ye,re)','right_inplace(ye,gr)',
-                'edge_inplace(ye,re)','edge_inplace(ye,gr)',
                 'opposite(wh,ye)','opposite(bl,gr)','opposite(or,re)','opposite(ye,wh)',
                 'opposite(gr,bl)','opposite(re,or)',
                 'adjacent(wh,bl)','adjacent(wh,or)','adjacent(wh,re)','adjacent(wh,gr)',
@@ -62,14 +59,18 @@ def classify():
                 'adjacent(ye,bl)','adjacent(ye,or)','adjacent(ye,re)','adjacent(ye,gr)',
                 'adjacent(bl,wh)','adjacent(or,wh)','adjacent(re,wh)','adjacent(gr,wh)',
                 'adjacent(re,bl)','adjacent(or,bl)','adjacent(re,gr)','adjacent(or,gr)',
-                'adjacent(bl,ye)','adjacent(or,ye)','adjacent(re,ye)','adjacent(gr,ye)']
-    train_pos = ['move_left(wh,re)','move_left(wh,gr)','move_left(ye,bl)','move_left(ye,or)','move_left(wh,bl)']
-    train_neg = ['move_left(ye,re)','move_left(ye,gr)',
-                'move_left(wh,or)']
-    target = 'move_left'
-    bk = ['move_left(+piece,+piece)',
-          'edge_center1(+piece,+piece,-piece)',
-          'opposite(+piece,+piece)']
+                'adjacent(bl,ye)','adjacent(or,ye)','adjacent(re,ye)','adjacent(gr,ye)',
+                'left_inplace(wh,or)','left_inplace(ye,re)','left_inplace(ye,gr)',
+                'edge_inplace(ye,re)','edge_inplace(ye,gr)',
+                'right_inplace(wh,gr)','right_inplace(ye,re)','right_inplace(ye,gr)',
+                'move_left_one(ye,bl)','move_left_one(wh,re)','move_left_one(wh,gr)',
+                'move_left_two(ye,or)','move_left_two(wh,bl)',
+                'move_right_two(ye,bl)','move_right_two(ye,or)']
+    train_pos = ['move_right_one(wh,re)','move_right_one(wh,or)','move_right_one(wh,bl)']
+    train_neg = ['move_right_one(ye,bl)','move_right_one(wh,gr)',
+                'move_right_one(ye,or)','move_right_one(ye,gr)','move_right_one(ye,re)']
+    target = 'move_right_one'
+    bk = ['move_right_one(+piece1,+piece2)', 'edge_center2(+piece1,+piece2,-piece)','adjacent(+piece2,+piece)']
 
     tree.learn(train_data,bk,target,pos=train_pos,neg=train_neg)
     print ("\nlearned ordered tree clauses are:\n")

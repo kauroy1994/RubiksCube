@@ -258,6 +258,7 @@ class Node(object):
                 
         #score all clauses and extract minimum
         result = []
+
         for clause in clauses:
             result.append(self.score_clause(clause))
         scores = [r[0] for r in result]
